@@ -20,15 +20,15 @@ export async function POST(request: NextRequest) {
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
 
-    new User({
+    const newUser = new User({
       username,
       email,
       password : hashedPassword
     })
 
-    const savedUser = await User.save()
+    const savedUser = await newUser.save()
 
-    await sendEmail({email, emailType: "VERIFY", UserId: savedUser._id})
+    await sendEmail({email, emailType: "VERIFY", userId: savedUser._id})
 
     return NextResponse.json({
       message: "User registerd successfully",

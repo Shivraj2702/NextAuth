@@ -4,12 +4,12 @@ import User from '@/models/userModel';
 
 export const sendEmail = async ({email, emailType , userId}:any) => {
    try {
-    const hashedToken = bcrypt.hash(userId.toString(), 10)
+    const hashedToken = await bcrypt.hash(userId.toString(), 10)
 
     if(emailType === "VERIFY") {
-      await User.findByIdAndUpdate({ userId , verifyToken: hashedToken, verifyTokenExpiry: Date.now() + 3600000} )
+      await User.findByIdAndUpdate(userId ,{ verifyToken: hashedToken, verifyTokenExpiry: Date.now() + 3600000} )
     } else if(emailType === "RESET" ) {
-      await User.findByIdAndUpdate({ userId , forgotPasswordToken: hashedToken, forgotPasswordTokenExpiry: Date.now() + 3600000} )
+      await User.findByIdAndUpdate(userId, { forgotPasswordToken: hashedToken, forgotPasswordTokenExpiry: Date.now() + 3600000} )
     }
 
     var transport = nodemailer.createTransport({
