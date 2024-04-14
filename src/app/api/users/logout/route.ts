@@ -14,6 +14,8 @@ export async function GET(request:NextRequest) {
             httpOnly: true,
             expires: new Date(0)
          })
+
+         return respone
         
     }  catch (error: any) {
         return NextResponse.json({error: error.message}, {status: 500})
